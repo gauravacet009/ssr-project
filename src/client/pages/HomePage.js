@@ -1,0 +1,110 @@
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import PropTypes from "prop-types"; // ES6
+import { fetchFlights } from "../actions";
+import customCss from '../../styles/style';
+import custom_css from "../../styles/style";
+const HomePage = (props) => {
+  const renderFlights = () => {
+    return props.flights.map((detail, indexId) => (
+      <div className="col s12 m6 l6 xl4" key={`col-${indexId}`}>
+        <div className="card large" style={custom_css.card_large} key={`card-${indexId}`}>
+          <div className="card-image" style={custom_css.card_image} key={`image-${indexId}`}>
+            <LazyLoadImage
+              alt={detail.mission_name}
+              src={detail.links.mission_patch_small}
+              style={custom_css.c_img}
+            />
+          </div>
+          <div className="card-content" key={`content-${indexId}`}>
+            <span className="card-title" style={customCss.card_title} key={`m_name-${indexId}`}>
+              <b key={`m_name_flight-${indexId}`}>                
+                {detail.mission_name}# {detail.flight_number}
+              </b>
+            </span>
+            <span className="card-title" style={customCss.card_title} key={`m_id-${indexId}`}>              
+              <b> Mission Id: </b>
+              {detail.mission_id.length > 0
+                ? detail.mission_id.map(
+                    (id, index) => `${(index ? ", " : "") + id}`
+                  )
+                : "NA"}
+            </span>
+            <span className="card-title" style={customCss.card_title} key={`year-${indexId}`}>              
+              <b> Launch Year: </b>
+              {detail.launch_year}
+            </span>
+            <span className="card-title" style={customCss.card_title} key={`launch-${indexId}`}>              
+              <b> Successful Launch: </b>
+              {detail.launch_success}
+            </span>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
+  const head = () => {
+    return (
+      <Helmet key={Math.random()}>
+        <title> Flight Schedule </title>
+        <meta property="og:title" content="Flight Schedule" />
+        <meta name="description" content="Flight schedules and landings" />
+        {/* <meta name="robots" content="index, follow" />
+                    <link rel="canonical" href="https://react-ssr-ilker.herokuapp.com" /> */}
+      </Helmet>
+    );
+  };
+
+  const { fetchFlights: loadFlights } = props;
+  //if (typeof window !== undefined) {
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      loadFlights();
+    }, [loadFlights]);
+  //}
+  return (
+    <div>
+      
+      {head()}
+      <div className="row">
+        <div className="section">
+          <div className="row">              
+              {renderFlights()}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    flights: state.flights,
+  };
+};
+
+const loadData = (store) => {
+  // For the connect tag we need Provider component but on the server at this moment app is not rendered yet
+  // So we need to use store itself to load data
+  return store.dispatch(fetchFlights()); // Manually dispatch a network request
+};
+
+HomePage.propTypes = {
+  flights: PropTypes.arrayOf(PropTypes.any),
+  fetchFlights: PropTypes.func,
+};
+
+HomePage.defaultProps = {
+  flights: [],
+  fetchFlights: null,
+};
+
+export default {
+  component: connect(mapStateToProps, { fetchFlights })(HomePage),
+  loadData,
+};
