@@ -4,6 +4,7 @@ A sample server side rendering project
 # SSR Project - React
 
 Demo: [Click to see DEMO]
+https://ssr-project.herokuapp.com/
 
 ### Installing
 
