@@ -1,4 +1,4 @@
 const config = {
-  launch_year: '2006'
+  launch_year: ''
 };
 export default config;
