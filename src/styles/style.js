@@ -1,6 +1,9 @@
 import { size } from "lodash";
 
 const  custom_css = {
+    filter_details: [
+        '2006','2007','2008','2009','2010'
+    ],
     card_title: {
         'fontSize': '16px; !importnat'
     },
@@ -14,6 +17,9 @@ const  custom_css = {
     },
     card_large: {
         'height': '430px'
+    },
+    filter: {
+        'margin': '3px'
     }
 }
 

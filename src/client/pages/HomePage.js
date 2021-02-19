@@ -1,6 +1,6 @@
 /* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -8,7 +8,17 @@ import PropTypes from "prop-types"; // ES6
 import { fetchFlights } from "../actions";
 import customCss from '../../styles/style';
 import custom_css from "../../styles/style";
+import config from '../../../config';
 const HomePage = (props) => {
+
+  const { fetchFlights: reloadFlights } = props;
+
+  const updateUrl = (e, value) => {
+    e.preventDefault();
+    //console.log(value, fetchFlights);
+    config.launch_year = value;
+    reloadFlights();
+  };
   const renderFlights = () => {
     return props.flights.map((detail, indexId) => (
       <div className="col s12 m6 l6 xl4" key={`col-${indexId}`}>
@@ -40,7 +50,7 @@ const HomePage = (props) => {
             </span>
             <span className="card-title" style={customCss.card_title} key={`launch-${indexId}`}>              
               <b> Successful Launch: </b>
-              {detail.launch_success}
+              {detail.launch_success ? 'True' : 'False'}
             </span>
           </div>
         </div>
@@ -54,8 +64,6 @@ const HomePage = (props) => {
         <title> Flight Schedule </title>
         <meta property="og:title" content="Flight Schedule" />
         <meta name="description" content="Flight schedules and landings" />
-        {/* <meta name="robots" content="index, follow" />
-                    <link rel="canonical" href="https://react-ssr-ilker.herokuapp.com" /> */}
       </Helmet>
     );
   };
@@ -73,8 +81,15 @@ const HomePage = (props) => {
       {head()}
       <div className="row">
         <div className="section">
-          <div className="row">              
+          <div className="row">
+          <div className="row">
+            {custom_css.filter_details.map((f_year, index) => 
+                <button onClick={(e) => updateUrl(e, f_year)} className="btn waves-effect waves-light btn-small" key={f_year+index} style={custom_css.filter}> {f_year} </button>
+            )}
+            </div>
+            <div className="row">              
               {renderFlights()}
+            </div>
           </div>
         </div>
       </div>
