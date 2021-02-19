@@ -7,7 +7,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import PropTypes from "prop-types"; // ES6
 import { fetchFlights } from "../actions";
 import customCss from '../../styles/style';
-import custom_css from "../../styles/style";
 import config from '../../../config';
 const HomePage = (props) => {
 
@@ -22,12 +21,12 @@ const HomePage = (props) => {
   const renderFlights = () => {
     return props.flights.map((detail, indexId) => (
       <div className="col s12 m6 l6 xl4" key={`col-${indexId}`}>
-        <div className="card large" style={custom_css.card_large} key={`card-${indexId}`}>
-          <div className="card-image" style={custom_css.card_image} key={`image-${indexId}`}>
+        <div className="card large" style={customCss.card_large} key={`card-${indexId}`}>
+          <div className="card-image" style={customCss.card_image} key={`image-${indexId}`}>
             <LazyLoadImage
               alt={detail.mission_name}
               src={detail.links.mission_patch_small}
-              style={custom_css.c_img}
+              style={customCss.c_img}
             />
           </div>
           <div className="card-content" key={`content-${indexId}`}>
@@ -83,8 +82,8 @@ const HomePage = (props) => {
         <div className="section">
           <div className="row">
           <div className="row">
-            {custom_css.filter_details.map((f_year, index) => 
-                <button onClick={(e) => updateUrl(e, f_year)} className="btn waves-effect waves-light btn-small" key={f_year+index} style={custom_css.filter}> {f_year} </button>
+            {customCss.filter_details.map((f_year, index) => 
+                <button onClick={(e) => updateUrl(e, f_year)} className="btn waves-effect waves-light btn-small" key={f_year+index} style={customCss.filter}> {f_year} </button>
             )}
             </div>
             <div className="row">              
